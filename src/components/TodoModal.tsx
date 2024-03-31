@@ -58,6 +58,7 @@ const TodoModal: React.FC<TodoModalProps> = ({
     if (type === "update" && todo) {
       setTitle(todo.title);
       setStatus(todo.status);
+      setDayofWeek(todo.dayofWeek)
     } else {
       setTitle("");
       setStatus("incomplete");
@@ -182,7 +183,7 @@ const TodoModal: React.FC<TodoModalProps> = ({
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </label>
-              <label htmlFor="title">
+              <label htmlFor="dayofWeek">
                 Day of the week
                 <select
                   id="type"

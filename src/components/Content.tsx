@@ -44,7 +44,19 @@ function AppContent() {
 
   function handleOnDragEnd(result: A) {
     console.log(result);
-    if (!result.destination) return;
+    
+    const { destination, source } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
   }
 
   return (
@@ -68,11 +80,11 @@ function AppContent() {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          {/* <motion.div key={todo.id} variants={childVariants}> */}
-                          <div style={{padding:"5px 0"}}>
-                            <TodoItem todo={todo} />
-                          </div>
-                          {/* </motion.div> */}
+                          <motion.div key={todo.id} variants={childVariants}>
+                            <div style={{ padding: "5px 0" }}>
+                              <TodoItem todo={todo} />
+                            </div>
+                          </motion.div>
                         </div>
                       )}
                     </Draggable>

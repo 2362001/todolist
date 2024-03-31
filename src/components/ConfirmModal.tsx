@@ -1,10 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { MdDelete, MdOutlineClose } from "react-icons/md";
-import styles from "../styles/modules/modal.module.scss";
+import toast from "react-hot-toast";
+import { MdOutlineClose } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { deleteTodo } from "../slices/todoSlice";
-import toast from "react-hot-toast";
-import { Button } from "antd";
+import styles from "../styles/modules/modal.module.scss";
 
 interface ConfirmModalProps {
   modalOpen?: boolean;
@@ -45,13 +44,14 @@ const ConfirmModal = (props: ConfirmModalProps) => {
 
   const handleDelete = () => {
     dispatch(deleteTodo(todo?.id));
+    setModalOpen(false)
     toast.success("Todo Deleted Successfully");
   };
 
   return (
     <AnimatePresence>
       {modalOpen && (
-        <motion.div
+        <motion.div     
           className={styles.wrapper}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -66,8 +66,8 @@ const ConfirmModal = (props: ConfirmModalProps) => {
           >
             <motion.div
               className={styles.closeButton}
-              // onKeyDown={() => setModalOpen(false)}
-              // onClick={() => setModalOpen(false)}
+              onKeyDown={() => setModalOpen(false)}
+              onClick={() => setModalOpen(false)}
               role="button"
               tabIndex={0}
               initial={{ top: 40, opacity: 0 }}
@@ -76,20 +76,29 @@ const ConfirmModal = (props: ConfirmModalProps) => {
             >
               <MdOutlineClose />
             </motion.div>
-            <div
-              className={styles.icon}
-              onClick={() => handleDelete()}
-              onKeyDown={() => handleDelete()}
-              tabIndex={0}
-              role="button"
-            >
-              <MdDelete />
-            </div>
-            <div className={styles.buttonContainer}>
-              <Button variant="secondary" onClick={() => setModalOpen(false)}>
-                Cancel
-              </Button>
-            </div>
+            <form className={styles.form}>
+              <label htmlFor="title">
+                Are you sure you want to delete this?
+              </label>
+              <div className={styles.btn}>
+                <div
+                  className={styles.childbtn}
+                  onClick={() => {
+                    handleDelete();
+                  }}
+                >
+                  Yes
+                </div>
+                <div
+                  className={styles.childbtn}
+                  onClick={() => {
+                    setModalOpen(false);
+                  }}
+                >
+                  No
+                </div>
+              </div>
+            </form>
           </motion.div>
         </motion.div>
       )}
